@@ -20,7 +20,7 @@
 void setup() {
   pinMode(2, INPUT);
   pinMode(3, INPUT); //Magnetsensoren auf Ports 1,2 gesetzt
-
+}
 const double radius  = 12.5;
 const double pi      = 3.141;
 const double umfang  = 2*pi*radius;
@@ -39,7 +39,7 @@ void loop() {
     
     if (MagSI != digitalRead(2) || MagSII != digitalRead(3))
     {
-     geschwindigkeit = (umfang/2) / millis() - start; 
+     geschwindigkeit = int((umfang/2) / millis() - start); 
     }
   }
 }
