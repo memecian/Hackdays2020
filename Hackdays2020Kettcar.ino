@@ -37,7 +37,7 @@ void loop() {
     MagSI = digitalRead(2);  
     MagSII = digitalRead(3);
     
-    if (digitalRead(2) || digitalRead(3))
+    if (MagSI != digitalRead(2) || MagSII != digitalRead(3))
     {
      geschwindigkeit = (umfang/2) / millis() - start; 
     }
