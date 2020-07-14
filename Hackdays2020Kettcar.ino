@@ -51,7 +51,11 @@ void loop() {
   vmomentan = (umfang / 2) / deltat; // m/ms
   vmomentan = (vmomentan * 3600)   ;  // Umwandlung zu km/h
   vvorherig = vmomentan;
-  
+  if (startzyklus + 750 == millis)
+  {
+    vvorherig = 0;
+    vmomentan = 0;
+  }
 
 // Akkustandsanzeige:
 
