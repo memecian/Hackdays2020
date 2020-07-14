@@ -1,45 +1,64 @@
-/* 
- Von
-  _______                     _  _   
- |__   __|                   | || |  
-    | | ___  __ _ _ __ ___   | || |_ 
+/*
+  Von
+  _______                     _  _
+  |__   __|                  | || |
+    | | ___  __ _ _ __ ___   | || |_
     | |/ _ \/ _` | '_ ` _ \  |__   _|
-    | |  __/ (_| | | | | | |    | |  
-    |_|\___|\__,_|_| |_| |_|    |_|  
-                                  
-  ... mit Liebe gemacht!                                   
+    | |  __/ (_| | | | | | |    | |
+    |_|\___|\__,_|_| |_| |_|    |_|
 
+  ... mit Liebe gemacht!
   Kettcar-Programm v1.1
-  Features : 
+  Features :
      - Geschwindigkeitsmessung (halbwegs)
-  Geplant : 
+  Geplant :
      - Temperaturmessung
      - Spannungsmessung
      - Ausgabe auf ein TFT-Display !!
 */
 void setup() {
-  pinMode(2, INPUT);
-  pinMode(3, INPUT); //Magnetsensoren auf Ports 1,2 gesetzt
-}
-const double radius  = 12.5;
-const double pi      = 3.141;
-const double umfang  = 2*pi*radius;
-volatile bool MagSI  = digitalRead(2);
-volatile bool MagSII = digitalRead(3);
-volatile  int geschwindigkeit;
-volatile long start;
-
-void loop() {
-  start = millis();
   
-  while (millis != start + 500)
-  {
-    MagSI = digitalRead(2);  
-    MagSII = digitalRead(3);
-    
-    if (MagSI != digitalRead(2) || MagSII != digitalRead(3))
-    {
-     geschwindigkeit = int((umfang/2) / millis() - start); 
-    }
-  }
+  pinMode(2, INPUT);
+  attachInterrupt(digitalPinToInterrupt(2), zeiterfassung, RISING);
+  pinMode(3, INPUT);
+  attachInterrupt(digitalPinToInterrupt(3), zeiterfassung, RISING); //Interrupts auf den Magnetsensorpins anknüpfen
+}
+/*
+ * Variablendeklaration für die Geschwindigkeitsmessung
+ */
+const double radius  = 0.125;           //in Metern
+const double pi      = 3.141;           //
+const double umfang  = 2 * pi * radius;
+
+volatile long tletzte = 0;
+volatile long t  = 0;
+
+int deltat;
+int vvorherig;
+int vmomentan;
+
+/*
+ * Variablendeklaration für Spannungsmessung 
+ */
+
+
+
+long zyklusstart = millis(); 
+
+void loop() {                                               
+// Geschwindigkeitsberechnung:
+  deltat = t - tleztze;
+  vmomentan = (umfang / 2) / deltat; // m/ms
+  vmomentan = (vmomentan * 3600)   ;  // Umwandlung zu km/h
+  vvorherig = vmomentan;
+  
+
+// Akkustandsanzeige:
+
+
+}
+
+void zeiterfassung() {
+  tletzte = t;
+  t = millis();
 }
